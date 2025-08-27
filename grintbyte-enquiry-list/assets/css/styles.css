@@ -1,0 +1,21 @@
+/* Enquiry form wrapper */
+.gbe-enquiry-form-wrapper {
+  margin: 2em 0;
+  padding: 1.5em;
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.gbe-enquiry-form-wrapper h2 {
+  margin-bottom: 1em;
+}
+
+/* WooCommerce form consistency */
+.woocommerce-form-enquiry .form-row {
+  margin-bottom: 1em;
+}
+
+.woocommerce-form-enquiry .button {
+  min-width: 160px;
+}

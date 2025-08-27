@@ -1,0 +1,126 @@
+/* === Enquiry Form Fresh Style === */
+
+.form-row input[type='text'],
+.form-row input[type='email'],
+.form-row input[type='tel'],
+.form-row textarea {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.gbe-enquiry-form-wrapper {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 700px;
+  margin: 2rem auto;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.gbe-enquiry-form-wrapper h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 0.5rem;
+}
+
+.gbe-enquiry-form .form-row {
+  margin-bottom: 1rem;
+}
+
+.gbe-enquiry-form .form-row label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 500;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.gbe-enquiry-form input[type='text'],
+.gbe-enquiry-form input[type='email'],
+.gbe-enquiry-form textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  background: #fafafa;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.gbe-enquiry-form input:focus,
+.gbe-enquiry-form textarea:focus {
+  outline: none;
+  border-color: #96588a; /* WooCommerce purple */
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(150, 88, 138, 0.15);
+}
+
+.gbe-enquiry-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.gbe-enquiry-form .form-row-first,
+.gbe-enquiry-form .form-row-last {
+  width: 48%;
+  display: inline-block;
+}
+
+.gbe-enquiry-form .form-row-first {
+  margin-right: 3%;
+}
+
+.gbe-enquiry-form .button {
+  background: #96588a; /* WooCommerce purple */
+  border: none;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+
+.gbe-enquiry-form .button:hover {
+  background: #7b466f;
+  transform: translateY(-1px);
+}
+
+.gbe-enquiry-form .button:active {
+  transform: translateY(0);
+}
+
+/* Small screen: stack columns */
+@media (max-width: 600px) {
+  .gbe-enquiry-form .form-row-first,
+  .gbe-enquiry-form .form-row-last {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+/* message toast */
+
+.gbe-message {
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+.gbe-success {
+  background: #e6ffed;
+  border: 1px solid #00a32a;
+  color: #135e0a;
+}
+.gbe-error {
+  background: #ffeaea;
+  border: 1px solid #cc1818;
+  color: #8a1c1c;
+}
