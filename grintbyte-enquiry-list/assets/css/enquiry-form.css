@@ -66,14 +66,18 @@
   min-height: 100px;
 }
 
-.gbe-enquiry-form .form-row-first,
-.gbe-enquiry-form .form-row-last {
-  width: 48%;
-  display: inline-block;
+/* Flexbox for two-column rows */
+.gbe-enquiry-form .form-row-group {
+  display: flex;
+  gap: 3%;
+  flex-wrap: wrap;
 }
 
-.gbe-enquiry-form .form-row-first {
-  margin-right: 3%;
+.gbe-enquiry-form .form-row-first,
+.gbe-enquiry-form .form-row-last {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .gbe-enquiry-form .button {
@@ -99,10 +103,9 @@
 
 /* Small screen: stack columns */
 @media (max-width: 600px) {
-  .gbe-enquiry-form .form-row-first,
-  .gbe-enquiry-form .form-row-last {
-    width: 100%;
-    margin-right: 0;
+  .gbe-enquiry-form .form-row-group {
+    flex-direction: column;
+    gap: 1rem;
   }
 }
 

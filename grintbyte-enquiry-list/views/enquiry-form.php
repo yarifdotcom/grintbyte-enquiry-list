@@ -36,15 +36,17 @@ $form_action = esc_url( get_permalink() );
                 <label><?php esc_html_e( 'Product Selected', 'gbe' ); ?></label>
                 <input type="text" value="<?php echo esc_attr( $product->get_name() ); ?>" disabled>
             </div>
+            
+            <div class="form-row-group">
+                <div class="form-row form-row-first">
+                    <label for="gbe-first-name"><?php esc_html_e( 'First Name', 'gbe' ); ?> <span class="required">*</span></label>
+                    <input type="text" id="gbe-first-name" name="first_name" value="<?php echo esc_attr( $first_name ); ?>" required>
+                </div>
 
-            <div class="form-row form-row-first">
-                <label for="gbe-first-name"><?php esc_html_e( 'First Name', 'gbe' ); ?> <span class="required">*</span></label>
-                <input type="text" id="gbe-first-name" name="first_name" value="<?php echo esc_attr( $first_name ); ?>" required>
-            </div>
-
-            <div class="form-row form-row-last">
-                <label for="gbe-last-name"><?php esc_html_e( 'Last Name', 'gbe' ); ?> <span class="required">*</span></label>
-                <input type="text" id="gbe-last-name" name="last_name" value="<?php echo esc_attr( $last_name ); ?>" required>
+                <div class="form-row form-row-last">
+                    <label for="gbe-last-name"><?php esc_html_e( 'Last Name', 'gbe' ); ?> <span class="required">*</span></label>
+                    <input type="text" id="gbe-last-name" name="last_name" value="<?php echo esc_attr( $last_name ); ?>" required>
+                </div>
             </div>
 
             <div class="form-row form-row-wide">
