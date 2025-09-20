@@ -17,6 +17,9 @@ class GBE_Frontend {
         // Enqueue scripts & styles
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
+        // Register rewrite rules (selain di activator)
+        add_action( 'init', array( $this, 'add_rewrite_rules' ) );
+
         add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 
         // Redirect after login
@@ -241,6 +244,18 @@ class GBE_Frontend {
         $body = str_replace( array_keys( $replacements ), array_values( $replacements ), $body );
 
         return wp_mail( $to, $subject, $body );
+    }
+
+    /**
+     * Fix wp engine
+     */
+    public function add_rewrite_rules() {
+        add_rewrite_rule(
+            '^enquiry/([0-9]+)/?',
+            'index.php?pagename=enquiry&product_id=$matches[1]',
+            'top'
+        );
+        add_rewrite_tag( '%product_id%', '([0-9]+)' );
     }
 
 }
