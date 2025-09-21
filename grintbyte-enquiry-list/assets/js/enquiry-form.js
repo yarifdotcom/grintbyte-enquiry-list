@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   jQuery(function ($) {
-    $('#gbe-enquiry-form').on('submit', function (e) {
+    $('#gbe-enquiry-submit').on('click', function (e) {
       e.preventDefault();
 
       const formData = jQuery(this).serializeArray();
