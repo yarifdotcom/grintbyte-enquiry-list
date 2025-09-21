@@ -67,7 +67,7 @@ $form_action = esc_url( get_permalink() );
             <div id="gbe-inline-message"></div>
 
             <p class="form-row">
-                <button type="submit" name="gbe_enquiry_submit" class="button alt">
+                <button type="button" id="gbe_enquiry_submit" class="button alt">
                     <?php esc_html_e( 'Submit Enquiry', 'gbe' ); ?>
                 </button>
             </p>
