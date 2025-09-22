@@ -56,7 +56,12 @@ $form_action = esc_url( get_permalink() );
 
             <div class="form-row form-row-wide">
                 <label for="gbe-phone"><?php esc_html_e( 'Phone Number', 'gbe' ); ?></label>
-                <input type="text" id="gbe-phone" name="phone" value="">
+                <input type="text" id="gbe-phone" name="phone" pattern="[0-9+ ]*" title="Only numbers, spaces, and + allowed">
+            </div>
+
+            <div class="form-row form-row-wide">
+                <label for="gbe-company"><?php esc_html_e( 'Company', 'gbe' ); ?></label>
+                <input type="text" id="gbe-company" name="company">
             </div>
 
             <div class="form-row form-row-wide">
@@ -67,7 +72,7 @@ $form_action = esc_url( get_permalink() );
             <div id="gbe-inline-message"></div>
 
             <p class="form-row">
-                <button type="button" id="gbe-enquiry-submit" class="button alt">
+                <button type="submit" id="gbe-enquiry-submit" class="button alt">
                     <?php esc_html_e( 'Submit Enquiry', 'gbe' ); ?>
                 </button>
             </p>

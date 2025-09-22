@@ -127,3 +127,39 @@
   border: 1px solid #cc1818;
   color: #8a1c1c;
 }
+
+/* === My Enquiry Table Styling Only === */
+.gbe-my-enquiry .shop_table.shop_table_responsive.my_account_enquiry {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gbe-my-enquiry .shop_table thead th {
+  background: #f7f7f7;
+  text-align: left;
+  padding: 12px 15px;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.gbe-my-enquiry .shop_table tbody td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e5e5e5;
+  vertical-align: middle;
+}
+
+.gbe-my-enquiry .shop_table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.gbe-my-enquiry .shop_table a.button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.4;
+}

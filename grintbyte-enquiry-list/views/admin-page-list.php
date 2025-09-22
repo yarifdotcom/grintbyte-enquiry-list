@@ -1,7 +1,7 @@
 <div class="wrap">
     <h1><?php esc_html_e( 'Enquiry List', 'gbe' ); ?></h1>
 
-    <table class="widefat fixed striped">
+    <table class="fixed widefat striped">
         <thead>
             <tr>
                 <th><?php esc_html_e( 'ID', 'gbe' ); ?></th>
@@ -9,6 +9,7 @@
                 <th><?php esc_html_e( 'Full Name', 'gbe' ); ?></th>
                 <th><?php esc_html_e( 'Email', 'gbe' ); ?></th>
                 <th><?php esc_html_e( 'Phone Number', 'gbe' ); ?></th>
+                <th><?php esc_html_e( 'Company', 'gbe' ); ?></th>
                 <th><?php esc_html_e( 'Status', 'gbe' ); ?></th>
                 <th><?php esc_html_e( 'Notes', 'gbe' ); ?></th>
                 <th><?php esc_html_e( 'Date', 'gbe' ); ?></th>
@@ -24,6 +25,7 @@
                     <td><?php echo esc_html( $row->fullname ); ?></td>
                     <td><?php echo esc_html( $row->email ); ?></td>
                     <td><?php echo esc_html( $row->phone_number ); ?></td>
+                    <td><?php echo esc_html( $row->company ); ?></td>
                     <td>
                         <form method="post">
                             <input type="hidden" name="enquiry_id" value="<?php echo intval( $row->id ); ?>" />

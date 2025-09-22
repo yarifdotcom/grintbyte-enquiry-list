@@ -171,6 +171,7 @@ class GBE_Frontend {
         $fullname   = sanitize_text_field( trim( ($_POST['first_name'] ?? '') . ' ' . ($_POST['last_name'] ?? '') ) );
         $message    = sanitize_textarea_field( $_POST['message'] ?? '' );
         $phone      = sanitize_text_field( $_POST['phone'] ?? '' );
+        $company    = sanitize_text_field( $_POST['company'] ?? '' );
         $product_id = absint( $_POST['product_id'] ?? 0 );        
 
         $raw_data =  array(
@@ -178,6 +179,7 @@ class GBE_Frontend {
             'fullname'   => $fullname,
             'email'      => sanitize_email($_POST['email']),
             'phone_number' => $phone,
+            'company'    => $company,
             'notes'    => $message,
             'status'   => 'Received',
             'created_at' => current_time( 'mysql' ),
@@ -237,6 +239,7 @@ class GBE_Frontend {
             '{name}'       => $raw_data['fullname'],
             '{email}'      => $raw_data['email'],
             '{phone}'      => $raw_data['phone_number'],
+            '{company}'    => $raw_data['company'],
             '{message}'    => $raw_data['notes'],
             '{product}'    => $raw_data['product'] ? get_the_title( $raw_data['product']) : '',
             '{date}'       => $raw_data['created_at'],

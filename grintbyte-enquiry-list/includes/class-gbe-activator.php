@@ -16,6 +16,7 @@ class GBE_Activator {
             fullname varchar(255) NOT NULL,
             email varchar(255) NOT NULL,
             phone_number varchar(100) DEFAULT '' NOT NULL,
+            company varchar(255) NOT NULL,
             status varchar(50) DEFAULT 'Received' NOT NULL,
             notes text DEFAULT '' NOT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -53,7 +54,7 @@ class GBE_Activator {
             add_option( 'gbe_email_settings', [
                 'to'      => get_option( 'admin_email' ), // default ke admin WP
                 'subject' => 'New Enquiry Received',
-                'body'    => 'You have a new enquiry from {name} about {product} with contact {email} - {phone}',
+                'body'    => 'You have a new enquiry from {name} about {product} with contact {email} - {phone} - {company}',
             ] );
         }
     }

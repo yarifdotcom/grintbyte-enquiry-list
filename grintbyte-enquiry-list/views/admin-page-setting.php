@@ -17,7 +17,7 @@
                 <th><label for="email_body">Email Body</label></th>
                 <td>
                     <textarea name="email_body" rows="8" class="large-text"><?php echo esc_textarea( $settings['email_body'] ?? '' ); ?></textarea>
-                    <p class="description">Available placeholders: {name}, {email}, {phone}, {message}, {product}, {date}</p>
+                    <p class="description">Available placeholders: {name}, {email}, {phone}, {company}, {message}, {product}, {date}</p>
                 </td>
             </tr>
         </table>
