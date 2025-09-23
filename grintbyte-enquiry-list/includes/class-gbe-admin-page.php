@@ -91,7 +91,7 @@ class GBE_Admin_Page {
         $defaults = [
             'notify_email'  => get_option( 'admin_email' ),
             'email_subject' => 'New Enquiry Received',
-            'email_body'    => 'You have a new enquiry from {name} about {product} with contact {email} - {phone} - {company}',
+            'email_body'    => 'You have a new enquiry from {name} about {product} with contact {email} - {phone} - {company} - {website}',
         ];
 
          // merge setting and default

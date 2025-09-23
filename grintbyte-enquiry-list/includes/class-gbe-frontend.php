@@ -45,14 +45,14 @@ class GBE_Frontend {
     public function enqueue_scripts() {
         wp_enqueue_style(
             'gbe-enquiry-form',
-            GBE_PLUGIN_URL . 'assets/css/enquiry-form.css',
+            GBE_PLUGIN_URL . 'css/enquiry-form.css',
             array(),
             GBE_VERSION
         );
 
         wp_enqueue_script(
             'gbe-enquiry-form',
-            GBE_PLUGIN_URL . 'assets/js/enquiry-form.js',
+            GBE_PLUGIN_URL . 'js/enquiry-form.js',
             array( 'jquery' ),
             GBE_VERSION,
             true
@@ -172,6 +172,7 @@ class GBE_Frontend {
         $message    = sanitize_textarea_field( $_POST['message'] ?? '' );
         $phone      = sanitize_text_field( $_POST['phone'] ?? '' );
         $company    = sanitize_text_field( $_POST['company'] ?? '' );
+        $website    = sanitize_text_field( $_POST['website'] ?? '' );
         $product_id = absint( $_POST['product_id'] ?? 0 );        
 
         $raw_data =  array(
@@ -180,6 +181,7 @@ class GBE_Frontend {
             'email'      => sanitize_email($_POST['email']),
             'phone_number' => $phone,
             'company'    => $company,
+            'website'    => $website,
             'notes'    => $message,
             'status'   => 'Received',
             'created_at' => current_time( 'mysql' ),
@@ -240,6 +242,7 @@ class GBE_Frontend {
             '{email}'      => $raw_data['email'],
             '{phone}'      => $raw_data['phone_number'],
             '{company}'    => $raw_data['company'],
+            '{website}'    => $raw_data['website'],
             '{message}'    => $raw_data['notes'],
             '{product}'    => $raw_data['product'] ? get_the_title( $raw_data['product']) : '',
             '{date}'       => $raw_data['created_at'],

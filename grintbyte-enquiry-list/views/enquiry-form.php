@@ -65,6 +65,11 @@ $form_action = esc_url( get_permalink() );
             </div>
 
             <div class="form-row form-row-wide">
+                <label for="gbe-website"><?php esc_html_e( 'Website', 'gbe' ); ?></label>
+                <input type="text" id="gbe-website" name="website">
+            </div>
+
+            <div class="form-row form-row-wide">
                 <label for="gbe-message"><?php esc_html_e( 'Notes', 'gbe' ); ?></label>
                 <textarea id="gbe-message" name="message" rows="4"></textarea>
             </div>
