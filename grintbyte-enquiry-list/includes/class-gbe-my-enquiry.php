@@ -55,12 +55,15 @@ class GBE_My_Enquiry {
         $current_user = wp_get_current_user();
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'gbe_enquiries';
+        $table_enquiries = $wpdb->prefix . 'gbe_enquiries';
+        $table_items = $wpdb->prefix . 'gbe_enquiry_items';
 
-        // Get enquiries by email
+         // Get enquiries by email
         $results = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM $table_name WHERE email = %s ORDER BY created_at DESC",
+                "SELECT e.*, i.product_name, i.variant_text FROM $table_enquiries e 
+                 LEFT JOIN $table_items i ON e.id = i.enquiry_id
+                 WHERE e.email = %s ORDER BY e.created_at DESC",
                 $current_user->user_email
             )
         );
@@ -78,8 +81,13 @@ class GBE_My_Enquiry {
             echo '</tr></thead><tbody>';
             
             foreach ( $results as $row ) {
+                $product_display = $row->product_name;
+                if ( !empty($row->variant_text) ) {
+                    $product_display .= ' (' . $row->variant_text . ')';
+                }
+
                 echo '<tr>';
-                echo '<td>' . esc_html( get_the_title( $row->product ) ) . '</td>';
+                echo '<td>' . esc_html( $product_display ) . '</td>';
                 echo '<td>' . esc_html( $row->status ) . '</td>';
                 echo '<td>' . esc_html( $row->notes ) . '</td>';
                 echo '<td><a href="' . esc_url( add_query_arg( array( 'delete_enquiry' => $row->id ) ) ) . '" class="button">' . __( 'Delete', 'gbe' ) . '</a></td>';

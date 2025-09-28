@@ -1,29 +1,12 @@
 <div class="wrap">
     <h1><?php esc_html_e( 'Enquiry List', 'gbe' ); ?></h1>
-
-    <style>
-        .gbe-table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .gbe-table-wrapper table {
-            min-width: 1200px; /* scroll horizontal */
-            border-collapse: collapse;
-        }
-    </style>
-
-    
     <div class="gbe-table-wrapper">
         <table class="fixed widefat striped">
             <thead>
                 <tr>
-                    <th><?php esc_html_e( 'ID', 'gbe' ); ?></th>
-                    <th><?php esc_html_e( 'Product', 'gbe' ); ?></th>
+                    <th><?php esc_html_e( 'Products', 'gbe' ); ?></th>
                     <th><?php esc_html_e( 'Full Name', 'gbe' ); ?></th>
                     <th><?php esc_html_e( 'Email', 'gbe' ); ?></th>
-                    <th><?php esc_html_e( 'Phone Number', 'gbe' ); ?></th>
-                    <th><?php esc_html_e( 'Company', 'gbe' ); ?></th>
-                    <th><?php esc_html_e( 'Website', 'gbe' ); ?></th>
                     <th><?php esc_html_e( 'Status', 'gbe' ); ?></th>
                     <th><?php esc_html_e( 'Notes', 'gbe' ); ?></th>
                     <th><?php esc_html_e( 'Date', 'gbe' ); ?></th>
@@ -34,13 +17,9 @@
             <?php if ( ! empty( $results ) ) : ?>
                 <?php foreach ( $results as $row ) : ?>
                     <tr>
-                        <td><?php echo intval( $row->id ); ?></td>
-                        <td><?php echo esc_html( $row->product ); ?></td>
+                        <td><?php echo esc_html( $row->products ); ?></td>
                         <td><?php echo esc_html( $row->fullname ); ?></td>
                         <td><?php echo esc_html( $row->email ); ?></td>
-                        <td><?php echo esc_html( $row->phone_number ); ?></td>
-                        <td><?php echo esc_html( $row->company ); ?></td>
-                        <td><?php echo esc_html( $row->website ); ?></td>
                         <td>
                             <form method="post">
                                 <input type="hidden" name="enquiry_id" value="<?php echo intval( $row->id ); ?>" />
@@ -57,6 +36,12 @@
                                 <button type="submit" name="gbe_update_status" class="button button-primary" style="margin-right:2px;margin-bottom:2px;" >Update</button>
                                 <a href="<?php echo esc_url( add_query_arg( array( 'action' => 'delete', 'id' => $row->id ) ) ); ?>" class="button button-secondary">Delete</a>
                             </form>
+                                <a href="#" 
+                                    class="gbe-preview-link button button-secondary" 
+                                    data-id="<?php echo intval($row->id); ?>" 
+                                    title="<?php esc_attr_e( 'Preview Enquiry', 'gbe' ); ?>">
+                                    <?php _e( 'Detail', 'gbe' ); ?>
+                                </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -66,4 +51,8 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Modal container -->
+    <div id="gbe-preview-modal"></div>
+
 </div>

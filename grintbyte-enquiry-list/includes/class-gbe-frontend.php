@@ -153,7 +153,9 @@ class GBE_Frontend {
         check_ajax_referer( 'gbe_enquiry_nonce', 'security' );
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'gbe_enquiries';
+        $table_enquiries = $wpdb->prefix . 'gbe_enquiries';
+        $table_items     = $wpdb->prefix . 'gbe_enquiry_items';
+
         $email      = sanitize_email( $_POST['email'] ?? '' );
 
         // check valid user
@@ -173,55 +175,87 @@ class GBE_Frontend {
         $phone      = sanitize_text_field( $_POST['phone'] ?? '' );
         $company    = sanitize_text_field( $_POST['company'] ?? '' );
         $website    = sanitize_text_field( $_POST['website'] ?? '' );
-        $product_id = absint( $_POST['product_id'] ?? 0 );        
+        $product_id = absint( $_POST['product_id'] ?? 0 );     
+        $variation_id = absint( $_POST['variation_id'] ?? 0 );   
 
-        $raw_data =  array(
-            'product' => $product_id,
-            'fullname'   => $fullname,
-            'email'      => sanitize_email($_POST['email']),
-            'phone_number' => $phone,
-            'company'    => $company,
-            'website'    => $website,
-            'notes'    => $message,
-            'status'   => 'Received',
-            'created_at' => current_time( 'mysql' ),
+        // Insert main enquiry
+        $inserted = $wpdb->insert(
+            $table_enquiries,
+            [
+                'fullname'     => $fullname,
+                'email'        => $email,
+                'phone_number' => $phone,
+                'company'      => $company,
+                'website'      => $website,
+                'notes'        => $message,
+                'status'       => 'Received',
+                'created_at'   => current_time( 'mysql' ),
+            ]
         );
 
-         // Insert to DB
-        $inserted = $wpdb->insert(
-            $table_name,
-            $raw_data
-        );        
-
-        if ( $inserted ) {
-            // Fire action hook for developers
-            do_action( 'gbe_enquiry_submitted', $wpdb->insert_id, $_POST );
-
-            // Send email notification
-    
-            $sent = $this->send_email_notification( $raw_data );
-
-            error_log('Send email result: ' . var_export($sent, true));
-
-            $redirect_url = $product_id ? get_permalink( $product_id ) : wc_get_page_permalink( 'shop' );
-
+        if ( ! $inserted ) {
             wp_send_json( [
-                'status'   => 'success',
-                'message'  => __( 'Your enquiry has been submitted successfully!', 'gbe' ),
-                'redirect' => $redirect_url,
-                'value' => $inserted,
-                'sent' => $sent
-            ] );
-
-        } else {
-             wp_send_json( [
                 'status'  => 'error',
-                'message' => __( 'There was an error submitting your enquiry. Please try again.', 'gbe' ),
-                'value' => $wpdb->last_error,
-                'query' => $wpdb->last_query,
-                'sent' => $sent
+                'message' => __( 'Failed to save enquiry.', 'gbe' ),
+                'error'   => $wpdb->last_error,
             ] );
         }
+
+        $enquiry_id = $wpdb->insert_id;
+
+        // Insert product item
+        $product = wc_get_product( $product_id );
+        if ( ! $product ) {
+            wp_send_json( [
+                'status'  => 'error',
+                'message' => __( 'Invalid product.', 'gbe' ),
+            ] );
+        }
+
+        $variant_text = '';
+
+        if ( $product->is_type( 'variable' ) && $variation_id ) {
+            $variation = wc_get_product( $variation_id );
+            if ( $variation ) {
+                $variant_text = wc_get_formatted_variation( $variation, true );
+            }
+        } else {
+            $variation_id = 0; // Set to 0 for simple products
+        }
+
+        $wpdb->insert(
+            $table_items,
+            [
+                'enquiry_id'   => $enquiry_id,
+                'product_id'   => $product_id,
+                'variation_id' => $variation_id,
+                'product_name' => $product->get_name(),
+                'variant_text' => $variant_text,
+                'quantity'     => 1,
+            ]
+        );
+
+        // Send email notification
+        $this->send_email_notification( [
+            'fullname'     => $fullname,
+            'email'        => $email,
+            'phone_number' => $phone,
+            'company'      => $company,
+            'website'      => $website,
+            'notes'        => $message,
+            'product'      => $product->get_name(),
+            'variation'    => $variant_text,
+            'created_at'   => current_time( 'mysql' ),
+        ] );
+
+        $redirect_url = $product_id ? get_permalink( $product_id ) : wc_get_page_permalink( 'shop' );
+
+
+        wp_send_json( [
+            'status'   => 'success',
+            'message'  => __( 'Your enquiry has been submitted successfully!', 'gbe' ),
+            'redirect' => $redirect_url,
+        ] );
     }
 
      /**
@@ -233,20 +267,22 @@ class GBE_Frontend {
 
         // Settings
         $settings = get_option( 'gbe_enquiry_settings', [] );
-        $to      = $settings['notify_email'] ?? get_option( 'admin_email' );
-        $subject = $settings['email_subject'] ?? 'New Enquiry Received';
-        $body    = $settings['email_body'] ?? 'You have a new enquiry from {name} about {product} with contact {email} - {phone} .';
+        $to       = $settings['notify_email'] ?? get_option( 'admin_email' );
+        $subject  = $settings['email_subject'] ?? 'New Enquiry Received';
+        $body     = $settings['email_body'] ?? 'You have a new enquiry from {name} about {product} with contact {email} - {phone}.';
 
         $replacements = [
-            '{name}'       => $raw_data['fullname'],
-            '{email}'      => $raw_data['email'],
-            '{phone}'      => $raw_data['phone_number'],
-            '{company}'    => $raw_data['company'],
-            '{website}'    => $raw_data['website'],
-            '{message}'    => $raw_data['notes'],
-            '{product}'    => $raw_data['product'] ? get_the_title( $raw_data['product']) : '',
-            '{date}'       => $raw_data['created_at'],
+            '{name}'    => $raw_data['fullname'],
+            '{email}'   => $raw_data['email'],
+            '{phone}'   => $raw_data['phone_number'],
+            '{company}' => $raw_data['company'],
+            '{website}' => $raw_data['website'],
+            '{message}' => $raw_data['notes'],
+            '{product}' => $raw_data['product'],
+            '{variation}' => $raw_data['variation'] ?? '',
+            '{date}'    => $raw_data['created_at'],
         ];
+
         $body = str_replace( array_keys( $replacements ), array_values( $replacements ), $body );
 
         return wp_mail( $to, $subject, $body );
@@ -263,5 +299,4 @@ class GBE_Frontend {
         );
         add_rewrite_tag( '%product_id%', '([0-9]+)' );
     }
-
 }

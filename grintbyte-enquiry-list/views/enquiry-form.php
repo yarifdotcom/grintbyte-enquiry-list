@@ -36,6 +36,27 @@ $form_action = esc_url( get_permalink() );
                 <label><?php esc_html_e( 'Product Selected', 'gbe' ); ?></label>
                 <input type="text" value="<?php echo esc_attr( $product->get_name() ); ?>" disabled>
             </div>
+
+            <?php if ( $product->is_type( 'variable' ) ) : 
+                $variations = $product->get_available_variations();
+                ?>
+                <div class="form-row form-row-wide">
+                    <label for="gbe-variation-id"><?php esc_html_e( 'Select Variation', 'gbe' ); ?> <span class="required">*</span></label>
+                    <select id="gbe-variation-id" name="variation_id" required>
+                        <option value=""><?php esc_html_e( 'Choose an option', 'gbe' ); ?></option>
+                        <?php foreach ( $variations as $variation ) : 
+                            $variation_obj = wc_get_product( $variation['variation_id'] );
+                            $variation_name = wc_get_formatted_variation( $variation_obj, true );
+                            ?>
+                            <option value="<?php echo esc_attr( $variation['variation_id'] ); ?>">
+                                <?php echo esc_html( $variation_name ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php else : ?>
+                <input type="hidden" name="variation_id" value="0">
+            <?php endif; ?>
             
             <div class="form-row-group">
                 <div class="form-row form-row-first">

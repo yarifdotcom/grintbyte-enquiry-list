@@ -7,25 +7,49 @@ class GBE_Activator {
 
     public static function activate() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'gbe_enquiries';
+
         $charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE $table_name (
+        // ==============================
+        // 1) Main enquiry table
+        // ==============================
+        $table_enquiries = $wpdb->prefix . 'gbe_enquiries';
+
+        $sql1 = "CREATE TABLE $table_enquiries (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
-            product varchar(255) NOT NULL,
             fullname varchar(255) NOT NULL,
             email varchar(255) NOT NULL,
             phone_number varchar(100) DEFAULT '' NOT NULL,
-            company varchar(255) NOT NULL,
-            website varchar(255) NOT NULL,
+            company varchar(255) DEFAULT '' NOT NULL,
+            website varchar(255) DEFAULT '' NOT NULL,
             status varchar(50) DEFAULT 'Received' NOT NULL,
             notes text DEFAULT '' NOT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";
 
+        // ==============================
+        // 2) Enquiry items table
+        // ==============================
+        $table_items = $wpdb->prefix . 'gbe_enquiry_items';
+
+        $sql2 = "CREATE TABLE $table_items (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            enquiry_id mediumint(9) NOT NULL,
+            product_id bigint(20) NOT NULL,
+            variation_id bigint(20) DEFAULT 0 NOT NULL,
+            product_name varchar(255) NOT NULL,
+            variant_text varchar(255) DEFAULT '' NOT NULL,
+            quantity int(11) DEFAULT 1 NOT NULL,
+            PRIMARY KEY  (id),
+            KEY enquiry_id (enquiry_id),
+            CONSTRAINT fk_enquiry FOREIGN KEY (enquiry_id)
+                REFERENCES $table_enquiries (id) ON DELETE CASCADE
+        ) $charset_collate;";
+
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta( $sql );
+        dbDelta( $sql1 );
+        dbDelta( $sql2 );
 
         // 🔹 Automatically create enquiry page if not exists
         $page_check = get_page_by_path( 'enquiry' );
@@ -33,7 +57,7 @@ class GBE_Activator {
             $page_id = wp_insert_post( array(
                 'post_title'     => 'Enquiry',
                 'post_name'      => 'enquiry',
-                'post_content'   => '[gbe_enquiry_form]', // shortcode will render template
+                'post_content'   => '[gbe_enquiry_form]',
                 'post_status'    => 'publish',
                 'post_type'      => 'page',
                 'post_author'    => get_current_user_id(),
@@ -41,21 +65,19 @@ class GBE_Activator {
             ) );
         }
 
-        // rewrite once
         add_rewrite_rule(
             '^enquiry/([0-9]+)/?',
             'index.php?pagename=enquiry&product_id=$matches[1]',
             'top'
         );
         add_rewrite_tag( '%product_id%', '([0-9]+)' );
-        flush_rewrite_rules();
 
-        // Default settings (only if not exist)
-        if ( get_option( 'gbe_email_settings' ) === false ) {
-            add_option( 'gbe_email_settings', [
-                'to'      => get_option( 'admin_email' ), // default ke admin WP
-                'subject' => 'New Enquiry Received',
-                'body'    => 'You have a new enquiry from {name} about {product} with contact {email} - {phone} - {company} - {website}',
+        // Default settings
+        if ( get_option( 'gbe_enquiry_settings' ) === false ) {
+            add_option( 'gbe_enquiry_settings', [
+                'notify_email'  => get_option( 'admin_email' ),
+                'email_subject' => 'New Enquiry Received',
+                'email_body'    => 'You have a new enquiry from {name} about {product} with contact {email} - {phone} - {company} - {website}',
             ] );
         }
     }

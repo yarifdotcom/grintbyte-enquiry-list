@@ -43,7 +43,8 @@
 
 .gbe-enquiry-form input[type='text'],
 .gbe-enquiry-form input[type='email'],
-.gbe-enquiry-form textarea {
+.gbe-enquiry-form textarea,
+.gbe-enquiry-form select {
   width: 100%;
   padding: 0.65rem 0.85rem;
   border: 1px solid #ccc;
@@ -162,4 +163,8 @@
   border-radius: 4px;
   font-size: 13px;
   line-height: 1.4;
+}
+
+.required {
+  color: red;
 }
