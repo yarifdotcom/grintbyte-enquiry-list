@@ -81,12 +81,25 @@ class GBE_Admin_Page {
 
         // Fetch data with product info
         $results = $wpdb->get_results("
-            SELECT e.*, GROUP_CONCAT(i.product_name SEPARATOR ', ') as products
+            SELECT 
+                e.*, 
+                GROUP_CONCAT(
+                    CASE 
+                        WHEN i.variation_id > 0 AND i.variant_text != '' THEN 
+                            CONCAT(i.product_name, ' - ', i.variant_text)
+                        WHEN i.variation_id > 0 THEN 
+                            CONCAT(i.product_name, ' (Variation ID: ', i.variation_id, ')')
+                        ELSE 
+                            i.product_name
+                    END 
+                    SEPARATOR ', '
+                ) as products
             FROM $table_enquiries e
             LEFT JOIN $table_items i ON e.id = i.enquiry_id
             GROUP BY e.id
             ORDER BY e.created_at DESC
         ");
+
 
         include GBE_PLUGIN_DIR . 'views/admin-page-list.php';
     }

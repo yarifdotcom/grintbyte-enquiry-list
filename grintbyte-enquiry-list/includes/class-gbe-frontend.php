@@ -43,6 +43,23 @@ class GBE_Frontend {
      * Enqueue frontend assets.
      */
     public function enqueue_scripts() {
+        // Enqueue Select2 CSS
+        wp_enqueue_style(
+            'select2',
+            GBE_PLUGIN_URL . 'css/select2.min.css',
+            array(),
+            '4.1.0'
+        );
+
+        // Enqueue Select2 JS
+        wp_enqueue_script(
+            'select2',
+            GBE_PLUGIN_URL . 'js/select2.min.js',
+            array(),
+            '4.1.0',
+            true
+        );
+
         wp_enqueue_style(
             'gbe-enquiry-form',
             GBE_PLUGIN_URL . 'css/enquiry-form.css',
@@ -176,7 +193,15 @@ class GBE_Frontend {
         $company    = sanitize_text_field( $_POST['company'] ?? '' );
         $website    = sanitize_text_field( $_POST['website'] ?? '' );
         $product_id = absint( $_POST['product_id'] ?? 0 );     
-        $variation_id = absint( $_POST['variation_id'] ?? 0 );   
+        $variation_ids = $_POST['variation_id'] ?? []; // get variaton array   
+
+        // Normalisasi array variations
+        if ( ! is_array( $variation_ids ) ) {
+            $variation_ids = [ $variation_ids ];
+        }
+
+        $variation_ids = array_map( 'absint', $variation_ids );
+        $variation_ids = array_filter( $variation_ids ); // Remove empty values
 
         // Insert main enquiry
         $inserted = $wpdb->insert(
@@ -212,28 +237,47 @@ class GBE_Frontend {
             ] );
         }
 
-        $variant_text = '';
-
-        if ( $product->is_type( 'variable' ) && $variation_id ) {
-            $variation = wc_get_product( $variation_id );
-            if ( $variation ) {
-                $variant_text = wc_get_formatted_variation( $variation, true );
-            }
+        // INSERT MULTIPLE ITEMS
+        if ( empty( $variation_ids ) || ( count( $variation_ids ) == 1 && $variation_ids[0] == 0 ) ) {
+            // Simple product or no variation selected
+            $wpdb->insert(
+                $table_items,
+                [
+                    'enquiry_id'   => $enquiry_id,
+                    'product_id'   => $product_id,
+                    'variation_id' => 0,
+                    'product_name' => $product->get_name(),
+                    'variant_text' => '',
+                    'quantity'     => 1,
+                ]
+            );
         } else {
-            $variation_id = 0; // Set to 0 for simple products
-        }
+            // Multiple variations selected
+            foreach ( $variation_ids as $variation_id ) {
+                if ( $variation_id == 0 ) continue; // Skip invalid
 
-        $wpdb->insert(
-            $table_items,
-            [
-                'enquiry_id'   => $enquiry_id,
-                'product_id'   => $product_id,
-                'variation_id' => $variation_id,
-                'product_name' => $product->get_name(),
-                'variant_text' => $variant_text,
-                'quantity'     => 1,
-            ]
-        );
+                $variant_text = '';
+                
+                if ( $product->is_type( 'variable' ) && $variation_id ) {
+                    $variation = wc_get_product( $variation_id );
+                    if ( $variation ) {
+                        $variant_text = wc_get_formatted_variation( $variation, true );
+                    }
+                } 
+                
+                $wpdb->insert(
+                    $table_items,
+                    [
+                        'enquiry_id'   => $enquiry_id,
+                        'product_id'   => $product_id,
+                        'variation_id' => $variation_id,
+                        'product_name' => $product->get_name(),
+                        'variant_text' => $variant_text,
+                        'quantity'     => 1,
+                    ]
+                );
+            }
+        }
 
         // Send email notification
         $this->send_email_notification( [
@@ -255,6 +299,7 @@ class GBE_Frontend {
             'status'   => 'success',
             'message'  => __( 'Your enquiry has been submitted successfully!', 'gbe' ),
             'redirect' => $redirect_url,
+            '$variation_ids' => $variation_ids
         ] );
     }
 

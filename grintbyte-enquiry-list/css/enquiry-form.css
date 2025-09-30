@@ -1,21 +1,11 @@
-/* === Enquiry Form Fresh Style === */
-
-.form-row input[type='text'],
-.form-row input[type='email'],
-.form-row input[type='tel'],
-.form-row textarea {
-  width: 100%;
-  box-sizing: border-box;
-  max-width: 100%;
-}
-
+/* === Enquiry Form Styling === */
 .gbe-enquiry-form-wrapper {
   background: #fff;
   border: 1px solid #e5e5e5;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  max-width: 700px;
+  max-width: 600px;
   margin: 2rem auto;
   font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
@@ -36,26 +26,29 @@
 .gbe-enquiry-form .form-row label {
   display: block;
   margin-bottom: 0.35rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #444;
   font-size: 0.95rem;
 }
 
 .gbe-enquiry-form input[type='text'],
 .gbe-enquiry-form input[type='email'],
+.gbe-enquiry-form input[type='tel'],
 .gbe-enquiry-form textarea,
 .gbe-enquiry-form select {
   width: 100%;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
   background: #fafafa;
   transition: border-color 0.2s ease, background 0.2s ease;
+  box-sizing: border-box;
 }
 
 .gbe-enquiry-form input:focus,
-.gbe-enquiry-form textarea:focus {
+.gbe-enquiry-form textarea:focus,
+.gbe-enquiry-form select:focus {
   outline: none;
   border-color: #96588a; /* WooCommerce purple */
   background: #fff;
@@ -67,7 +60,7 @@
   min-height: 100px;
 }
 
-/* Flexbox for two-column rows */
+/* Two-column layout */
 .gbe-enquiry-form .form-row-group {
   display: flex;
   gap: 3%;
@@ -78,31 +71,37 @@
 .gbe-enquiry-form .form-row-last {
   flex: 1;
   min-width: 0;
-  box-sizing: border-box;
 }
 
-.gbe-enquiry-form .button {
-  background: #96588a; /* WooCommerce purple */
+/* Buttons */
+.gbe-enquiry-form .button,
+#gbe-enquiry-submit {
+  background: #007cba;
   border: none;
   color: #fff;
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
   font-weight: 600;
-  transition: background 0.2s ease, transform 0.1s ease;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
-.gbe-enquiry-form .button:hover {
-  background: #7b466f;
+.gbe-enquiry-form .button:hover,
+#gbe-enquiry-submit:hover {
+  background: #005a87;
   transform: translateY(-1px);
 }
 
-.gbe-enquiry-form .button:active {
+.gbe-enquiry-form .button:active,
+#gbe-enquiry-submit:active {
   transform: translateY(0);
 }
 
-/* Small screen: stack columns */
+#gbe-enquiry-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Small screen */
 @media (max-width: 600px) {
   .gbe-enquiry-form .form-row-group {
     flex-direction: column;
@@ -110,26 +109,31 @@
   }
 }
 
-/* message toast */
-
+/* === Message Toasts === */
 .gbe-message {
   padding: 10px;
   margin-top: 15px;
   border-radius: 6px;
   font-weight: 500;
 }
+
 .gbe-success {
   background: #e6ffed;
   border: 1px solid #00a32a;
   color: #135e0a;
 }
+
 .gbe-error {
   background: #ffeaea;
   border: 1px solid #cc1818;
   color: #8a1c1c;
 }
 
-/* === My Enquiry Table Styling Only === */
+.required {
+  color: #e02424;
+}
+
+/* === My Enquiry Table Styling === */
 .gbe-my-enquiry .shop_table.shop_table_responsive.my_account_enquiry {
   width: 100%;
   border-collapse: collapse;
@@ -165,6 +169,60 @@
   line-height: 1.4;
 }
 
-.required {
-  color: red;
+/* === Select2 Custom Styling === */
+.gbe-select2 {
+  width: 100% !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 40px;
+  padding: 2px 5px;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border-color: #5b9dd9;
+  box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 13px;
+  margin: 4px 5px 0 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  margin-right: 5px;
+  color: #999;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+  color: #333;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  padding: 0 5px;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Placeholder styling */
+.select2-container--default .select2-selection--multiple .select2-selection__placeholder {
+  color: #999;
+  font-size: 14px;
+  margin-top: 7px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .select2-container .select2-search--inline .select2-search__field {
+    font-size: 16px; /* Prevent zoom on mobile */
+  }
 }

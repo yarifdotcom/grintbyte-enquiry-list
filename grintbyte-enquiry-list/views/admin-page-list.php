@@ -5,6 +5,7 @@
             <thead>
                 <tr>
                     <th><?php esc_html_e( 'Products', 'gbe' ); ?></th>
+                    <th style="width:28px"></th>
                     <th><?php esc_html_e( 'Full Name', 'gbe' ); ?></th>
                     <th><?php esc_html_e( 'Email', 'gbe' ); ?></th>
                     <th><?php esc_html_e( 'Status', 'gbe' ); ?></th>
@@ -18,6 +19,14 @@
                 <?php foreach ( $results as $row ) : ?>
                     <tr>
                         <td><?php echo esc_html( $row->products ); ?></td>
+                        <td>  
+                            <a href="#" 
+                                class="gbe-preview-link" 
+                                data-id="<?php echo intval($row->id); ?>" 
+                                title="<?php esc_attr_e( 'Preview Enquiry', 'gbe' ); ?>">
+                                <?php _e( 'Detail', 'gbe' ); ?>
+                            </a>
+                        </td>
                         <td><?php echo esc_html( $row->fullname ); ?></td>
                         <td><?php echo esc_html( $row->email ); ?></td>
                         <td>
@@ -36,12 +45,6 @@
                                 <button type="submit" name="gbe_update_status" class="button button-primary" style="margin-right:2px;margin-bottom:2px;" >Update</button>
                                 <a href="<?php echo esc_url( add_query_arg( array( 'action' => 'delete', 'id' => $row->id ) ) ); ?>" class="button button-secondary">Delete</a>
                             </form>
-                                <a href="#" 
-                                    class="gbe-preview-link button button-secondary" 
-                                    data-id="<?php echo intval($row->id); ?>" 
-                                    title="<?php esc_attr_e( 'Preview Enquiry', 'gbe' ); ?>">
-                                    <?php _e( 'Detail', 'gbe' ); ?>
-                                </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -58,17 +58,29 @@ class GBE_My_Enquiry {
         $table_enquiries = $wpdb->prefix . 'gbe_enquiries';
         $table_items = $wpdb->prefix . 'gbe_enquiry_items';
 
-         // Get enquiries by email
-        $results = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT e.*, i.product_name, i.variant_text FROM $table_enquiries e 
-                 LEFT JOIN $table_items i ON e.id = i.enquiry_id
-                 WHERE e.email = %s ORDER BY e.created_at DESC",
-                $current_user->user_email
-            )
-        );
+        // Get enquiries by email
+        $results = $wpdb->get_results( $wpdb->prepare("
+            SELECT 
+                e.*, 
+                GROUP_CONCAT(
+                    CASE 
+                        WHEN i.variation_id > 0 AND i.variant_text != '' THEN 
+                            CONCAT(i.product_name, ' - ', i.variant_text)
+                        WHEN i.variation_id > 0 THEN 
+                            CONCAT(i.product_name, ' (Variation ID: ', i.variation_id, ')')
+                        ELSE 
+                            i.product_name
+                    END 
+                    SEPARATOR ', '
+                ) as products
+            FROM $table_enquiries e
+            LEFT JOIN $table_items i ON e.id = i.enquiry_id
+            WHERE e.email = %s
+            GROUP BY e.id
+            ORDER BY e.created_at DESC
+        ", $current_user->user_email ) );
 
-        echo '<h3>' . esc_html__( 'My Enquiries', 'gbe' ) . '</h3>';
+        // echo '<h3>' . esc_html__( 'My Enquiries', 'gbe' ) . '</h3>';
 
         if ( ! empty( $results ) ) {
             echo '<div class="gbe-my-enquiry">';
@@ -81,13 +93,8 @@ class GBE_My_Enquiry {
             echo '</tr></thead><tbody>';
             
             foreach ( $results as $row ) {
-                $product_display = $row->product_name;
-                if ( !empty($row->variant_text) ) {
-                    $product_display .= ' (' . $row->variant_text . ')';
-                }
-
                 echo '<tr>';
-                echo '<td>' . esc_html( $product_display ) . '</td>';
+                echo '<td>' . esc_html( $row->products ) . '</td>';
                 echo '<td>' . esc_html( $row->status ) . '</td>';
                 echo '<td>' . esc_html( $row->notes ) . '</td>';
                 echo '<td><a href="' . esc_url( add_query_arg( array( 'delete_enquiry' => $row->id ) ) ) . '" class="button">' . __( 'Delete', 'gbe' ) . '</a></td>';

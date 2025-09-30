@@ -9,6 +9,14 @@
 .gbe-preview-link {
   cursor: pointer;
   color: #2271b1;
+  float: right;
+  width: 16px;
+  padding: 20px 4px 4px 4px;
+  height: 0;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 4px;
 }
 .wc-backbone-modal {
   display: block;
@@ -113,4 +121,26 @@
 
 .wc-order-preview-table tbody tr:nth-child(even) {
   background-color: #fafafa;
+}
+
+.gbe-preview-link::before {
+  font-family: WooCommerce;
+  speak: never;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  margin: 0;
+  text-indent: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  content: '\e010';
+  line-height: 16px;
+  font-size: 14px;
+  vertical-align: middle;
+  top: 4px;
 }
