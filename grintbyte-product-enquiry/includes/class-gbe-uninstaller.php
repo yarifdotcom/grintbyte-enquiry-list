@@ -14,9 +14,10 @@ class GBE_Uninstaller {
         $wpdb->query( "DROP TABLE IF EXISTS {$table_items}" );
         $wpdb->query( "DROP TABLE IF EXISTS {$table_enquiries}" );
 
-        // hapus juga option email settings (biar clean uninstall)
-        delete_option( 'gbe_email_settings' );
+        // hapus juga option settings (biar clean uninstall)
+        delete_option( 'gbe_enquiry_settings' );
 
+        
         // reset rewrite rules
         flush_rewrite_rules();
     }

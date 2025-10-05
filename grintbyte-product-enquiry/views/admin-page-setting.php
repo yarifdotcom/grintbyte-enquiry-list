@@ -16,8 +16,19 @@
             <tr>
                 <th><label for="email_body">Email Body</label></th>
                 <td>
-                    <textarea name="email_body" rows="8" class="large-text"><?php echo esc_textarea( $settings['email_body'] ?? '' ); ?></textarea>
-                    <p class="description">Available placeholders: {name}, {email}, {phone}, {company}, {website}, {message}, {product}, {variation}, {date}</p>
+                    <textarea name="email_body" rows="8" class="large-text code"><?php echo esc_textarea( $settings['email_body'] ?? '' ); ?></textarea>
+                    <p class="description">
+                        <?php esc_html_e( 'Available placeholders you can use in the email body:', 'gen' ); ?><br>
+                        <code>{name}</code>,
+                        <code>{email}</code>,
+                        <code>{phone}</code>,
+                        <code>{company}</code>,
+                        <code>{website}</code>,
+                        <code>{message}</code>,
+                        <code>{product}</code>,
+                        <code>{variation}</code>,
+                        <code>{date}</code>
+                    </p>
                 </td>
             </tr>
         </table>

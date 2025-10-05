@@ -1,8 +1,6 @@
 jQuery(document).ready(function ($) {
   // button Preview
-  console.log('gbe admin js loaded');
   $(document).on('click', '.gbe-preview-link', function (e) {
-    console.log('preview clicked');
     e.preventDefault();
 
     let enquiryId = $(this).data('id');

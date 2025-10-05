@@ -76,9 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
         data: formData,
         dataType: 'json',
         success: function (response) {
-          console.log(response);
-          console.log(formData);
-
           if (response.status === 'success') {
             $msgBox.addClass('gbe-message gbe-success').text(response.message);
             setTimeout(() => (window.location.href = response.redirect), 2000);

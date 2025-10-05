@@ -15,7 +15,7 @@ class GBE_Activator {
         // ==============================
         $table_enquiries = $wpdb->prefix . 'gbe_enquiries';
 
-        $sql1 = "CREATE TABLE $table_enquiries (
+        $sql1 = "CREATE TABLE {$table_enquiries} (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             fullname varchar(255) NOT NULL,
             email varchar(255) NOT NULL,
@@ -33,7 +33,7 @@ class GBE_Activator {
         // ==============================
         $table_items = $wpdb->prefix . 'gbe_enquiry_items';
 
-        $sql2 = "CREATE TABLE $table_items (
+        $sql2 = "CREATE TABLE {$table_items} (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             enquiry_id mediumint(9) NOT NULL,
             product_id bigint(20) NOT NULL,
@@ -47,7 +47,7 @@ class GBE_Activator {
                 REFERENCES $table_enquiries (id) ON DELETE CASCADE
         ) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta( $sql1 );
         dbDelta( $sql2 );
 
@@ -65,20 +65,23 @@ class GBE_Activator {
             ) );
         }
 
+        add_rewrite_tag( '%product_id%', '([0-9]+)' );
         add_rewrite_rule(
             '^enquiry/([0-9]+)/?',
             'index.php?pagename=enquiry&product_id=$matches[1]',
             'top'
         );
-        add_rewrite_tag( '%product_id%', '([0-9]+)' );
+  
 
         // Default settings
-        if ( get_option( 'gbe_enquiry_settings' ) === false ) {
+        if ( !get_option( 'gbe_enquiry_settings' ) ) {
             add_option( 'gbe_enquiry_settings', [
                 'notify_email'  => get_option( 'admin_email' ),
                 'email_subject' => 'New Enquiry Received',
                 'email_body'    => 'You have a new enquiry from {name} about {product} with contact {email} - {phone} - {company} - {website}',
             ] );
         }
+
+        flush_rewrite_rules();
     }
 }

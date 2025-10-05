@@ -1,6 +1,11 @@
 <div class="wrap">
-    <h1><?php esc_html_e( 'Enquiry List', 'gbe' ); ?></h1>
+    <h1><?php esc_html_e( 'Product Enquiry List', 'gbe' ); ?></h1>
     <div class="gbe-table-wrapper">
+        <?php if ( isset( $_POST['gbe_update_status'] ) ) : ?>
+            <div class="updated notice">
+                <p><?php esc_html_e( 'Enquiry updated successfully.', 'gen' ); ?></p>
+            </div>
+        <?php endif; ?>
         <table class="fixed widefat striped">
             <thead>
                 <tr>

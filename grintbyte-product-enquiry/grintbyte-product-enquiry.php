@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: GrintByte Enquiry List
+ * Plugin Name: GrintByte Product Enquiry
  * Plugin URI: https://grintbyte.com
- * Description: A custom enquiry/waitlist management system for WooCommerce with a top-level admin menu.
+ * Description: A product enquiry management system for WooCommerce with a top-level admin menu.
  * Version: 1.0.0
  * Author: GrintByte
  * Author URI: https://grintbyte.com

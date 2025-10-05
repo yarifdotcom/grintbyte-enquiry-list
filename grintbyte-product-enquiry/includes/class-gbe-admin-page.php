@@ -13,12 +13,12 @@ class GBE_Admin_Page {
 
     public function register_menu() {
         add_menu_page(
-            __( 'Enquiry List', 'gbe' ),
-            __( 'Enquiry List', 'gbe' ),
+            __( 'Product Enquiry', 'gbe' ),
+            __( 'Product Enquiry', 'gbe' ),
             'manage_woocommerce',
             'gbe-enquiry-list',
             array( $this, 'render_admin_page' ),
-            'dashicons-email-alt2',
+            'dashicons-products',
             56
         );
 
@@ -116,6 +116,11 @@ class GBE_Admin_Page {
                 'email_subject'=> sanitize_text_field( $_POST['email_subject'] ?? '' ),
                 'email_body'   => wp_kses_post( $_POST['email_body'] ?? '' ),
             ];
+
+            if ( empty( $settings['notify_email'] ) ) {
+                $settings['notify_email'] = get_option( 'admin_email' );
+            }
+
             update_option( 'gbe_enquiry_settings', $settings );
 
             add_settings_error(
@@ -124,6 +129,9 @@ class GBE_Admin_Page {
                 __( 'Settings saved.', 'gbe' ),
                 'updated'
             );
+
+             // Refresh rewrite rules if struktur changes
+             flush_rewrite_rules();
         }
 
         $defaults = [
