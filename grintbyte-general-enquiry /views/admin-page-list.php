@@ -1,9 +1,23 @@
 <div class="wrap">
     <h1><?php esc_html_e( 'General Enquiry List', 'gen' ); ?></h1>
     <div class="gbe-table-wrapper">
-        <?php if ( isset( $_POST['gen_update_status'] ) ) : ?>
-            <div class="updated notice">
+        <?php 
+        // --- success notice for update ---
+        if ( isset( $_GET['updated'] ) && $_GET['updated'] === '1' ) : ?>
+            <div class="updated notice is-dismissible">
                 <p><?php esc_html_e( 'Enquiry updated successfully.', 'gen' ); ?></p>
+            </div>
+        <?php endif; ?>
+
+        <?php
+        // --- success notice for delete ---
+        if ( isset( $_GET['deleted'] ) && $_GET['deleted'] === '1' ) : ?>
+            <div class="updated notice is-dismissible">
+                <p><?php esc_html_e( 'Enquiry deleted successfully.', 'gen' ); ?></p>
+            </div>
+        <?php elseif ( isset( $_GET['deleted'] ) && $_GET['deleted'] === '0' ) : ?>
+            <div class="error notice is-dismissible">
+                <p><?php esc_html_e( 'Failed to delete enquiry.', 'gen' ); ?></p>
             </div>
         <?php endif; ?>
 

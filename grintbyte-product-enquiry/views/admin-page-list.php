@@ -1,11 +1,26 @@
 <div class="wrap">
     <h1><?php esc_html_e( 'Product Enquiry List', 'gbe' ); ?></h1>
     <div class="gbe-table-wrapper">
-        <?php if ( isset( $_POST['gbe_update_status'] ) ) : ?>
-            <div class="updated notice">
-                <p><?php esc_html_e( 'Enquiry updated successfully.', 'gen' ); ?></p>
+        <?php 
+        // --- success notice for update ---
+        if ( isset( $_GET['updated'] ) && $_GET['updated'] === '1' ) : ?>
+            <div class="updated notice is-dismissible">
+                <p><?php esc_html_e( 'Enquiry updated successfully.', 'gbe' ); ?></p>
             </div>
         <?php endif; ?>
+
+        <?php
+        // --- success notice for delete ---
+        if ( isset( $_GET['deleted'] ) && $_GET['deleted'] === '1' ) : ?>
+            <div class="updated notice is-dismissible">
+                <p><?php esc_html_e( 'Enquiry deleted successfully.', 'gbe' ); ?></p>
+            </div>
+        <?php elseif ( isset( $_GET['deleted'] ) && $_GET['deleted'] === '0' ) : ?>
+            <div class="error notice is-dismissible">
+                <p><?php esc_html_e( 'Failed to delete enquiry.', 'gbe' ); ?></p>
+            </div>
+        <?php endif; ?>
+
         <table class="fixed widefat striped">
             <thead>
                 <tr>

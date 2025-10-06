@@ -172,10 +172,12 @@ class GEN_Frontend {
             'created_at'   => current_time( 'mysql' ),
         ] );
 
+        $redirect_url = wc_get_page_permalink( 'shop' ) ?? home_url();
+
         wp_send_json( [
             'status'   => 'success',
             'message'  => __( 'Your enquiry has been submitted successfully!', 'gen' ),
-            'redirect' => wp_get_referer() ?: home_url(), // back to page before
+            'redirect' => $redirect_url
         ] );
     }
 

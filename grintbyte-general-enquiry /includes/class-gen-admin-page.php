@@ -68,11 +68,20 @@ class GEN_Admin_Page {
                 ],
                 [ 'id' => intval( $_POST['enquiry_id'] ) ]
             );
+
+            // Redirect for clear URL
+            wp_safe_redirect( add_query_arg( 'updated', '1', remove_query_arg( array( 'action', 'id' ) ) ) );
+            exit;
         }
 
         // === Handle delete ===
         if ( isset( $_GET['action'], $_GET['id'] ) && $_GET['action'] === 'delete' ) {
-            $wpdb->delete( $table_enquiries, [ 'id' => intval( $_GET['id'] ) ] );
+            $deleted = $wpdb->delete( $table_enquiries, [ 'id' => intval( $_GET['id'] ) ] );
+
+            // Redirect with status delete
+            $status = $deleted ? '1' : '0';
+            wp_safe_redirect( add_query_arg( 'deleted', $status, remove_query_arg( array( 'action', 'id' ) ) ) );
+            exit;
         }
 
         // === Fetch data ===
