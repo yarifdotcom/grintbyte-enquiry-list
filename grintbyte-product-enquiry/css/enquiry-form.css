@@ -7,12 +7,12 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   max-width: 600px;
   margin: 2rem auto;
-  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  /* font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; */
 }
 
 .gbe-enquiry-form-wrapper h2 {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 1.5rem;
   color: #333;
   border-bottom: 2px solid #f1f1f1;
@@ -26,7 +26,7 @@
 .gbe-enquiry-form .form-row label {
   display: block;
   margin-bottom: 0.35rem;
-  font-weight: 600;
+  font-weight: 400;
   color: #444;
   font-size: 0.95rem;
 }
@@ -76,11 +76,11 @@
 /* Buttons */
 .gbe-enquiry-form .button,
 #gbe-enquiry-submit {
-  background: #007cba;
-  border: none;
+  background: #fff;
+  border: 1px solid #000;
   color: #fff;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
+  padding: 1em 2em;
+  font-weight: 400;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.1s ease;
 }
@@ -114,7 +114,7 @@
   padding: 10px;
   margin-top: 15px;
   border-radius: 6px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .gbe-success {
@@ -147,7 +147,7 @@
   background: #f7f7f7;
   text-align: left;
   padding: 12px 15px;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 14px;
   border-bottom: 1px solid #e5e5e5;
 }
