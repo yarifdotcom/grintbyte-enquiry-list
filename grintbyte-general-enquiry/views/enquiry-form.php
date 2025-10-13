@@ -49,7 +49,7 @@ $email        = $current_user->exists() ? $current_user->user_email : '';
 
         <p class="form-row">
             <button type="submit" id="gen-enquiry-submit" class="button alt">
-                <?php esc_html_e( 'Submit Enquiry', 'gen' ); ?>
+                <?php esc_html_e( 'Send Enquiry', 'gen' ); ?>
             </button>
         </p>
     </form>

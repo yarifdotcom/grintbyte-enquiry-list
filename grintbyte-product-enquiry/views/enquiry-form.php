@@ -98,7 +98,7 @@ $form_action = esc_url( get_permalink() );
 
             <p class="form-row">
                 <button type="submit" id="gbe-enquiry-submit" class="button alt">
-                    <?php esc_html_e( 'Submit Enquiry', 'gbe' ); ?>
+                    <?php esc_html_e( 'Send Enquiry', 'gbe' ); ?>
                 </button>
             </p>
         </form>
