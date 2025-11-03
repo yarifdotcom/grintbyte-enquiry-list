@@ -30,6 +30,15 @@ class GBE_Admin_Page {
             'gbe-enquiry-settings',
             [ $this, 'render_settings_page' ]
         );
+
+        add_submenu_page(
+            'gbe-enquiry-list',
+            __( 'How-To', 'gbe' ),
+            __( 'How-To', 'gbe' ),
+            'manage_woocommerce',
+            'gbe-enquiry-howto',
+            [ $this, 'render_howto_page' ]
+        );
     }
 
     public function enqueue_admin_assets( $hook ) {
@@ -152,6 +161,10 @@ class GBE_Admin_Page {
         $settings = wp_parse_args( get_option( 'gbe_enquiry_settings', [] ), $defaults );
 
         include GBE_PLUGIN_DIR . 'views/admin-page-setting.php';
+    }
+
+    public function render_howto_page() {
+        include GBE_PLUGIN_DIR . 'views/admin-page-howto.php';
     }
 
     public function ajax_preview_enquiry() {

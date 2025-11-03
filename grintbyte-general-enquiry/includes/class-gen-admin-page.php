@@ -35,6 +35,15 @@ class GEN_Admin_Page {
             'gen-enquiry-settings',
             [ $this, 'render_settings_page' ]
         );
+
+         add_submenu_page(
+            'gen-enquiry-list',
+            __( 'How-To', 'gen' ),
+            __( 'How-To', 'gen' ),
+            'manage_woocommerce',
+            'gen-enquiry-howto',
+            [ $this, 'render_howto_page' ]
+        );
     }
 
     /**
@@ -143,5 +152,9 @@ class GEN_Admin_Page {
         $settings = wp_parse_args( get_option( 'gen_enquiry_settings', [] ), $defaults );
 
         include GEN_PLUGIN_DIR . 'views/admin-page-setting.php';
+    }
+
+    public function render_howto_page() {
+        include GEN_PLUGIN_DIR . 'views/admin-page-howto.php';
     }
 }
